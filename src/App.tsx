@@ -49,15 +49,31 @@ export default function App() {
         }),
       });
 
-      const json = await res.json();
+      const contentType = res.headers.get('content-type');
+      let responseData: any = null;
 
-      if (json.success && json.data) {
-        setAnalysisResult(json.data);
-        setDocuments(json.data.documents || []);
+      if (contentType && contentType.includes('application/json')) {
+        responseData = await res.json();
+      } else {
+        const text = await res.text();
+        console.error('Server non-JSON error response:', text);
+        throw new Error(
+          res.status === 413
+            ? 'The uploaded form image is too large. Please upload a smaller photo or snapshot.'
+            : 'Server returned a non-JSON response. Please verify GEMINI_API_KEY is configured in Settings or try a Demo Form.'
+        );
+      }
+
+      if (res.ok && responseData && responseData.success && responseData.data) {
+        setAnalysisResult(responseData.data);
+        setDocuments(responseData.data.documents || []);
         setUserAnswers({});
         setScreenState('guided');
       } else {
-        throw new Error(json.error || 'Could not parse form image.');
+        throw new Error(
+          (responseData && responseData.error) ||
+            'Could not parse form image. Please ensure image has good lighting and text is visible.'
+        );
       }
     } catch (err: any) {
       console.error('Analysis error:', err);

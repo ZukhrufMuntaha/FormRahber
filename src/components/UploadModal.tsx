@@ -36,6 +36,41 @@ export const UploadModal: React.FC<UploadModalProps> = ({
   const [cameraError, setCameraError] = useState<string | null>(null);
   const streamRef = useRef<MediaStream | null>(null);
 
+  // Image Resizer Helper to keep payload light and fast
+  const resizeAndCompressImage = (dataUrl: string, maxDimension = 1600): Promise<string> => {
+    return new Promise((resolve) => {
+      const img = new Image();
+      img.onload = () => {
+        let { width, height } = img;
+        if (width <= maxDimension && height <= maxDimension) {
+          resolve(dataUrl);
+          return;
+        }
+
+        if (width > height) {
+          height = Math.round((height * maxDimension) / width);
+          width = maxDimension;
+        } else {
+          width = Math.round((width * maxDimension) / height);
+          height = maxDimension;
+        }
+
+        const canvas = document.createElement('canvas');
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext('2d');
+        if (ctx) {
+          ctx.drawImage(img, 0, 0, width, height);
+          resolve(canvas.toDataURL('image/jpeg', 0.88));
+        } else {
+          resolve(dataUrl);
+        }
+      };
+      img.onerror = () => resolve(dataUrl);
+      img.src = dataUrl;
+    });
+  };
+
   // File Upload Handler
   const handleFileChange = (file: File) => {
     if (!file) return;
@@ -45,10 +80,11 @@ export const UploadModal: React.FC<UploadModalProps> = ({
     }
 
     const reader = new FileReader();
-    reader.onload = (e) => {
+    reader.onload = async (e) => {
       const result = e.target?.result as string;
       if (result) {
-        onImageSelected(result);
+        const compressed = await resizeAndCompressImage(result, 1600);
+        onImageSelected(compressed);
       }
     };
     reader.readAsDataURL(file);
