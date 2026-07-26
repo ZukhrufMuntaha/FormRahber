@@ -269,7 +269,7 @@ export const GuidedFilling: React.FC<GuidedFillingProps> = ({
                   key={idx}
                   id={`select-opt-${idx}`}
                   onClick={() => setInputValue(option)}
-                  className={`w-full p-4 rounded-xl border-2 text-left text-sm font-semibold transition-all flex items-center justify-between ${
+                  className={`w-full p-4 rounded-[18px] border-2 text-left text-sm font-semibold transition-all flex items-center justify-between ${
                     inputValue === option
                       ? 'bg-blue-50 border-blue-600 text-blue-950 shadow-xs'
                       : 'bg-white hover:bg-slate-50 border-slate-200 text-slate-800'
@@ -289,13 +289,13 @@ export const GuidedFilling: React.FC<GuidedFillingProps> = ({
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
               placeholder={currentField.exampleValue ? `Example: ${currentField.exampleValue}` : 'Type your details here...'}
-              className="w-full px-5 py-4 bg-slate-50/70 border-2 border-slate-200 rounded-2xl focus:bg-white focus:border-blue-600 focus:outline-none text-base text-slate-900 font-medium transition-all shadow-2xs"
+              className="w-full px-5 py-4 bg-slate-50/70 border-2 border-slate-200 rounded-[18px] focus:bg-white focus:border-blue-600 focus:outline-none text-base text-slate-900 font-medium transition-all shadow-2xs"
             />
           ) : currentField.fieldType === 'checkbox' ? (
             <button
               id="step-input-checkbox"
               onClick={() => setInputValue(inputValue === 'Agreed' ? '' : 'Agreed')}
-              className={`w-full p-4 rounded-2xl border-2 text-left font-semibold text-sm transition-all flex items-center gap-3.5 ${
+              className={`w-full p-4 rounded-[18px] border-2 text-left font-semibold text-sm transition-all flex items-center gap-3.5 ${
                 inputValue === 'Agreed'
                   ? 'bg-blue-50 border-blue-600 text-blue-900'
                   : 'bg-slate-50 border-slate-200 text-slate-700'
@@ -319,7 +319,7 @@ export const GuidedFilling: React.FC<GuidedFillingProps> = ({
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
               placeholder={currentField.exampleValue ? `Example: ${currentField.exampleValue}` : 'Enter value here...'}
-              className="w-full px-5 py-4 bg-slate-50/70 border-2 border-slate-200 rounded-2xl focus:bg-white focus:border-blue-600 focus:outline-none text-base text-slate-900 font-medium transition-all shadow-2xs"
+              className="w-full px-5 py-4 bg-slate-50/70 border-2 border-slate-200 rounded-[18px] focus:bg-white focus:border-blue-600 focus:outline-none text-base text-slate-900 font-medium transition-all shadow-2xs"
             />
           )}
         </div>

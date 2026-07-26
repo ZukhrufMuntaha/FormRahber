@@ -1,6 +1,6 @@
 export type AppLanguage = 'en' | 'ur' | 'roman_urdu';
 
-export type ScreenState = 'landing' | 'upload' | 'analysis' | 'overview' | 'guided' | 'summary' | 'export';
+export type ScreenState = 'landing' | 'upload' | 'analysis' | 'overview' | 'guided' | 'summary' | 'export' | 'about';
 
 export type FieldCategoryGroup = 'personal' | 'contact' | 'education' | 'documents' | 'other';
 

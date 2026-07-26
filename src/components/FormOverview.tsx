@@ -165,7 +165,7 @@ export const FormOverview: React.FC<FormOverviewProps> = ({
                 <div
                   key={doc.id}
                   onClick={() => onToggleDocumentReady(doc.id)}
-                  className={`p-4 rounded-2xl border transition-all cursor-pointer flex items-start gap-3.5 ${
+                  className={`p-4 rounded-[18px] border transition-all cursor-pointer flex items-start gap-3.5 ${
                     doc.isReady
                       ? 'bg-blue-50/70 border-blue-300 shadow-xs'
                       : 'bg-slate-50/60 border-slate-200 hover:border-slate-300'
@@ -258,7 +258,7 @@ export const FormOverview: React.FC<FormOverviewProps> = ({
         </div>
 
         {/* Compact List */}
-        <div className="divide-y divide-slate-100 rounded-2xl border border-slate-200 overflow-hidden bg-slate-50/30">
+        <div className="divide-y divide-slate-100 rounded-[18px] border border-slate-200 overflow-hidden bg-slate-50/30">
           {filteredFields.map((field) => {
             const isExpanded = expandedFieldId === field.id;
             const explanationText = getLocalized(field.explanation);

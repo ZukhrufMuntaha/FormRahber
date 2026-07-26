@@ -12,6 +12,8 @@ import {
   ArrowRight,
   ShieldCheck,
   CheckCircle2,
+  FileWarning,
+  X,
 } from 'lucide-react';
 
 interface UploadModalProps {
@@ -19,6 +21,8 @@ interface UploadModalProps {
   onImageSelected: (base64: string) => void;
   onSelectSample: (sample: SampleFormTemplate) => void;
   onCancel: () => void;
+  errorMsg?: string | null;
+  onClearError?: () => void;
 }
 
 export const UploadModal: React.FC<UploadModalProps> = ({
@@ -26,6 +30,8 @@ export const UploadModal: React.FC<UploadModalProps> = ({
   onImageSelected,
   onSelectSample,
   onCancel,
+  errorMsg,
+  onClearError,
 }) => {
   const t = TRANSLATIONS[currentLang];
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -167,6 +173,67 @@ export const UploadModal: React.FC<UploadModalProps> = ({
         </p>
       </div>
 
+      {/* Unsupported Image Error Alert Card */}
+      {errorMsg && (
+        <div className="bg-red-50 border-2 border-red-200 rounded-[22px] p-5 sm:p-6 text-red-950 shadow-sm animate-fade-in relative">
+          <div className="flex items-start gap-3.5 sm:gap-4">
+            <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-2xl bg-red-100 border border-red-200 flex items-center justify-center shrink-0 text-red-600">
+              <FileWarning className="w-6 h-6 stroke-[2.2]" />
+            </div>
+
+            <div className="space-y-2.5 flex-1">
+              <div className="flex items-center justify-between gap-2">
+                <h3 className="text-base sm:text-lg font-extrabold text-red-900 tracking-tight">
+                  {errorMsg === 'Unsupported Image Detected' ? t.unsupportedTitle : 'Notice'}
+                </h3>
+                {onClearError && (
+                  <button
+                    onClick={onClearError}
+                    className="text-red-400 hover:text-red-700 p-1 rounded-lg transition-colors cursor-pointer"
+                    aria-label="Close error alert"
+                  >
+                    <X className="w-5 h-5" />
+                  </button>
+                )}
+              </div>
+
+              <p className="text-sm font-semibold text-red-800 leading-snug">
+                {errorMsg === 'Unsupported Image Detected' ? t.unsupportedDesc1 : errorMsg}
+              </p>
+
+              {errorMsg === 'Unsupported Image Detected' && (
+                <div className="bg-white/90 p-3 sm:p-3.5 rounded-xl border border-red-200/80 text-xs font-medium text-red-900 leading-relaxed">
+                  {t.unsupportedDesc2}
+                </div>
+              )}
+
+              <div className="flex flex-wrap items-center gap-2 pt-1">
+                <button
+                  id="reupload-supported-form-btn"
+                  onClick={() => {
+                    if (onClearError) onClearError();
+                    fileInputRef.current?.click();
+                  }}
+                  className="px-4 py-2 rounded-xl bg-red-600 hover:bg-red-700 text-white font-bold text-xs shadow-xs transition-colors cursor-pointer flex items-center gap-1.5"
+                >
+                  <Upload className="w-3.5 h-3.5" />
+                  <span>Upload Supported Form</span>
+                </button>
+
+                {onClearError && (
+                  <button
+                    onClick={onClearError}
+                    className="px-4 py-2 rounded-xl bg-white hover:bg-slate-50 text-slate-700 font-bold text-xs border border-slate-200 transition-colors cursor-pointer"
+                  >
+                    Dismiss
+                  </button>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Main Upload Zone */}
       {!isCameraActive ? (
         <div
@@ -232,7 +299,7 @@ export const UploadModal: React.FC<UploadModalProps> = ({
             </div>
 
             {cameraError && (
-              <div className="flex items-center gap-2 text-red-600 bg-red-50 p-3 rounded-[12px] border border-red-200 text-xs text-left">
+              <div className="flex items-center gap-2 text-red-600 bg-red-50 p-3 rounded-[18px] border border-red-200 text-xs text-left">
                 <AlertCircle className="w-4 h-4 shrink-0" />
                 <span>{cameraError}</span>
               </div>

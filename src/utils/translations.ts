@@ -17,6 +17,8 @@ export interface UITranslation {
   step3Desc: string;
   step4Title: string;
   step4Desc: string;
+  step5Title: string;
+  step5Desc: string;
   featuresTitle: string;
   faqTitle: string;
   uploadHeader: string;
@@ -37,6 +39,9 @@ export interface UITranslation {
   stepDetecting: string;
   stepExplanations: string;
   stepDocuments: string;
+  unsupportedTitle: string;
+  unsupportedDesc1: string;
+  unsupportedDesc2: string;
   overviewTitle: string;
   detectedFields: string;
   documentChecklist: string;
@@ -73,20 +78,22 @@ export const TRANSLATIONS: Record<AppLanguage, UITranslation> = {
   en: {
     appName: 'FormRahber',
     tagline: 'Your AI Guide for Confusing Official Forms',
-    heroTitle: 'Understand & Fill Official Forms in Simple Language',
+    heroTitle: 'Understand Every Official Form with AI',
     heroSubtitle: 'FormRahber helps you understand and complete university, scholarship, bank, job, and government forms with step-by-step AI guidance. Upload a form, get simple explanations, receive document suggestions, and confidently review your answers—all in one place.',
     uploadButton: 'Upload Your Form',
     trySampleButton: 'See Demo',
     howItWorksTitle: 'How FormRahber Works',
-    howItWorksSubtitle: 'Four simple steps to complete any confusing official form with complete confidence.',
+    howItWorksSubtitle: 'Five simple steps to complete, review, and download any confusing official form with complete confidence.',
     step1Title: '1. Snap or Upload Photo',
     step1Desc: 'Upload a photo or capture a document using your phone camera in good lighting.',
     step2Title: '2. AI Field Analysis',
     step2Desc: 'Gemini AI extracts every field, explains difficult legal jargon, and identifies required documents.',
     step3Title: '3. Guided Step-by-Step',
     step3Desc: 'Answer one easy question at a time in English, Urdu, or Roman Urdu with automatic formatting.',
-    step4Title: '4. Copy & Complete',
-    step4Desc: 'Review your complete summary, verify document checklist, and copy onto your real form.',
+    step4Title: '4. Review & Copy',
+    step4Desc: 'Review your complete summary, verify document checklist, and edit any answers.',
+    step5Title: '5. Download & Print Form',
+    step5Desc: 'Edit field responses, preview overlays, and download as PNG image, PDF document, or print directly.',
     featuresTitle: 'Why Choose FormRahber?',
     faqTitle: 'Frequently Asked Questions',
     uploadHeader: 'Upload or Capture Your Form',
@@ -107,6 +114,9 @@ export const TRANSLATIONS: Record<AppLanguage, UITranslation> = {
     stepDetecting: 'Identifying input fields & category structure...',
     stepExplanations: 'Generating plain-language explanations in English & Urdu...',
     stepDocuments: 'Detecting required supporting documents & certificates...',
+    unsupportedTitle: 'Unsupported Image Detected',
+    unsupportedDesc1: "This image doesn't appear to be an official form.",
+    unsupportedDesc2: 'Please upload a clear photo of a supported form (University, Bank, CNIC, Passport, Job, or Scholarship form).',
     overviewTitle: 'Form Analysis Overview',
     detectedFields: 'Fields Detected',
     documentChecklist: 'Required Documents Checklist',
@@ -146,15 +156,17 @@ export const TRANSLATIONS: Record<AppLanguage, UITranslation> = {
     uploadButton: 'فارم کی تصویر اپ لوڈ کریں',
     trySampleButton: 'ڈیمو دیکھیں',
     howItWorksTitle: 'فارم رہبر کیسے کام کرتا ہے؟',
-    howItWorksSubtitle: 'چار آسان مراحل میں کسی بھی مشکل فارم کو بغیر غلطی کے مکمل کریں۔',
+    howItWorksSubtitle: 'پانچ آسان مراحل میں کسی بھی مشکل فارم کو پر کریں، ایڈٹ کریں اور پرنٹ یا ڈاؤن لوڈ کریں۔',
     step1Title: '۱۔ فارم کی تصویر لیں',
     step1Desc: 'اپنے موبائل کیمرے یا فائل سے صاف فارم کی تصویر اپ لوڈ کریں۔',
     step2Title: '۲۔ اے آئی کا جائزہ',
     step2Desc: 'جیمنائی اے آئی تمام خانوں کی نشاندہی اور مشکل اصطلاحات کو آسان اردو میں بیان کرتا ہے۔',
     step3Title: '۳۔ ایک ایک سوال کا جواب',
     step3Desc: 'ایک وقت میں ایک سادہ سوال کا جواب اردو يا انگریزی میں دیں۔',
-    step4Title: '۴۔ کاپی کریں اور فارم بھریں',
-    step4Desc: 'حتمی خلاصہ دیکھیں اور معلومات اپنے اصل فارم پر منتقل کریں۔',
+    step4Title: '۴۔ جائزہ لیں اور کاپی کریں',
+    step4Desc: 'حتمی خلاصہ دیکھیں اور ضرورت کے مطابق معلومات تبدیل کریں۔',
+    step5Title: '۵۔ پر شدہ فارم ڈاؤن لوڈ کریں',
+    step5Desc: 'معلومات میں ترمیم کریں، جلی تصویر یا پی ڈی ایف (PDF) ڈاؤن لوڈ کریں اور براہ راست پرنٹ کریں۔',
     featuresTitle: 'فارم رہبر کی خصوصیات',
     faqTitle: 'عام طور پر پوچھے جانے والے سوالات',
     uploadHeader: 'فارم اپ لوڈ یا کیمرے سے تصویر لیں',
@@ -175,6 +187,9 @@ export const TRANSLATIONS: Record<AppLanguage, UITranslation> = {
     stepDetecting: 'خانوں اور زمرہ جات کی نشاندہی کی جا رہی ہے...',
     stepExplanations: 'اردو اور انگریزی میں آسان وضاحت تیار کی جا رہی ہے...',
     stepDocuments: 'ضروری دستاویزات اور اسناد کی فہرست بنائی جا رہی ہے...',
+    unsupportedTitle: 'Unsupported Image Detected',
+    unsupportedDesc1: "This image doesn't appear to be an official form.",
+    unsupportedDesc2: 'Please upload a clear photo of a supported form (University, Bank, CNIC, Passport, Job, or Scholarship form).',
     overviewTitle: 'فارم کا تجزیاتی خلاصہ',
     detectedFields: 'شناخت شدہ خانے',
     documentChecklist: 'ضروری دستاویزات کی فہرست',
@@ -214,15 +229,17 @@ export const TRANSLATIONS: Record<AppLanguage, UITranslation> = {
     uploadButton: 'Form Photo Upload Karein',
     trySampleButton: 'Demo Dekhein',
     howItWorksTitle: 'FormRahber Kaise Kaam Karta Hai?',
-    howItWorksSubtitle: 'Chaar asaan steps me kisi bhi mushkil form ko bina kisi ghalti ke complete karein.',
+    howItWorksSubtitle: 'Paanch asaan steps me kisi bhi form ko edit, review, aur download karein.',
     step1Title: '1. Photo Capture ya Upload',
     step1Desc: 'Apne mobile camera ya gallery se form ki saaf photo upload karein.',
     step2Title: '2. AI Field Analysis',
     step2Desc: 'Gemini AI mushkil terms ko explain karta hai aur required documents batata hai.',
     step3Title: '3. Step-by-Step Guidance',
     step3Desc: 'Ek waqt me ek asaan sawaal ka jawab Roman Urdu ya English me dein.',
-    step4Title: '4. Copy Aur Complete',
-    step4Desc: 'Final summary dekhein, documents verify karein aur apne real form par copy karein.',
+    step4Title: '4. Review & Copy',
+    step4Desc: 'Final summary dekhein, documents verify karein aur answers edit karein.',
+    step5Title: '5. Download & Print Form',
+    step5Desc: 'Answers edit karein, PNG image ya PDF document download karein aur direct print karein.',
     featuresTitle: 'FormRahber Kyun Khas Hai?',
     faqTitle: 'Aam Sawaalat (FAQ)',
     uploadHeader: 'Form Upload Karein Ya Camera Se Photo Lein',
@@ -243,6 +260,9 @@ export const TRANSLATIONS: Record<AppLanguage, UITranslation> = {
     stepDetecting: 'Input fields aur sections detect ho rahe hain...',
     stepExplanations: 'Asaan Roman Urdu aur English me explanations ban rahi hain...',
     stepDocuments: 'Required documents checklist taiyar ho rahi hai...',
+    unsupportedTitle: 'Unsupported Image Detected',
+    unsupportedDesc1: "This image doesn't appear to be an official form.",
+    unsupportedDesc2: 'Please upload a clear photo of a supported form (University, Bank, CNIC, Passport, Job, or Scholarship form).',
     overviewTitle: 'Form Analysis Overview',
     detectedFields: 'Detected Fields',
     documentChecklist: 'Required Documents Checklist',

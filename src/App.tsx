@@ -15,6 +15,8 @@ import { FormOverview } from './components/FormOverview';
 import { GuidedFilling } from './components/GuidedFilling';
 import { SummaryReview } from './components/SummaryReview';
 import { FormExportPreview } from './components/FormExportPreview';
+import { AboutPage } from './components/AboutPage';
+import { Footer } from './components/Footer';
 import { AlertCircle, RefreshCw } from 'lucide-react';
 
 export default function App() {
@@ -32,6 +34,36 @@ export default function App() {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [screenState]);
+
+  // Navigation Handlers
+  const handleNavigateHome = () => {
+    setScreenState('landing');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleNavigateDemoForms = () => {
+    setScreenState('landing');
+    setTimeout(() => {
+      const el = document.getElementById('sample-forms-section');
+      if (el) el.scrollIntoView({ behavior: 'smooth' });
+    }, 100);
+  };
+
+  const handleNavigateHowItWorks = () => {
+    setScreenState('landing');
+    setTimeout(() => {
+      const el = document.getElementById('how-it-works-section');
+      if (el) el.scrollIntoView({ behavior: 'smooth' });
+    }, 100);
+  };
+
+  const handleNavigateUpload = () => {
+    setScreenState('upload');
+  };
+
+  const handleNavigateAbout = () => {
+    setScreenState('about');
+  };
 
   // Analyze Image via Server Route
   const analyzeFormImage = async (base64Image: string) => {
@@ -69,6 +101,9 @@ export default function App() {
         setDocuments(responseData.data.documents || []);
         setUserAnswers({});
         setScreenState('guided');
+      } else if (responseData && (responseData.isNotForm || responseData.error === 'Unsupported Image Detected')) {
+        setErrorMsg('Unsupported Image Detected');
+        setScreenState('upload');
       } else {
         throw new Error(
           (responseData && responseData.error) ||
@@ -76,11 +111,15 @@ export default function App() {
         );
       }
     } catch (err: any) {
-      console.error('Analysis error:', err);
-      setErrorMsg(
-        err.message ||
-          'Failed to analyze form image. Please ensure image has good lighting and text is visible.'
-      );
+      if (err.message === 'Unsupported Image Detected' || err.message?.includes('Unsupported Image')) {
+        setErrorMsg('Unsupported Image Detected');
+      } else {
+        console.warn('Analysis error:', err);
+        setErrorMsg(
+          err.message ||
+            'Failed to analyze form image. Please ensure image has good lighting and text is visible.'
+        );
+      }
       setScreenState('upload');
     }
   };
@@ -131,7 +170,7 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#F8FBFF] via-white to-[#F8FBFF] font-sans text-[#1F2937] flex flex-col selection:bg-blue-200 selection:text-blue-900">
+    <div className="min-h-screen bg-gradient-to-b from-[#F8FBFF] via-white to-[#F8FBFF] font-sans text-[#1F2937] flex flex-col selection:bg-blue-200 selection:text-blue-900 overflow-x-hidden w-full">
       
       {/* Sticky Header */}
       <Header
@@ -139,6 +178,11 @@ export default function App() {
         onLanguageChange={(lang) => setCurrentLang(lang)}
         screenState={screenState}
         onNavigate={(screen) => setScreenState(screen)}
+        onNavigateHome={handleNavigateHome}
+        onNavigateDemoForms={handleNavigateDemoForms}
+        onNavigateHowItWorks={handleNavigateHowItWorks}
+        onNavigateAbout={handleNavigateAbout}
+        onStartUpload={handleNavigateUpload}
         onReset={handleReset}
       />
 
@@ -153,7 +197,7 @@ export default function App() {
             {lastUploadedImage && (
               <button
                 onClick={() => analyzeFormImage(lastUploadedImage)}
-                className="px-3 py-1.5 rounded-lg bg-red-600 text-white font-bold text-xs shrink-0 flex items-center gap-1"
+                className="px-3 py-1.5 rounded-lg bg-red-600 text-white font-bold text-xs shrink-0 flex items-center gap-1 cursor-pointer"
               >
                 <RefreshCw className="w-3.5 h-3.5" />
                 <span>Retry AI</span>
@@ -168,8 +212,16 @@ export default function App() {
         {screenState === 'landing' && (
           <LandingHero
             currentLang={currentLang}
-            onStartUpload={() => setScreenState('upload')}
+            onStartUpload={handleNavigateUpload}
             onSelectSample={handleSelectSample}
+          />
+        )}
+
+        {screenState === 'about' && (
+          <AboutPage
+            currentLang={currentLang}
+            onStartUpload={handleNavigateUpload}
+            onBackToHome={handleNavigateHome}
           />
         )}
 
@@ -178,7 +230,9 @@ export default function App() {
             currentLang={currentLang}
             onImageSelected={analyzeFormImage}
             onSelectSample={handleSelectSample}
-            onCancel={() => setScreenState('landing')}
+            onCancel={handleNavigateHome}
+            errorMsg={errorMsg}
+            onClearError={() => setErrorMsg(null)}
           />
         )}
 
@@ -193,7 +247,7 @@ export default function App() {
             documents={documents}
             onToggleDocumentReady={handleToggleDocumentReady}
             onStartGuidedFilling={() => setScreenState('guided')}
-            onBack={() => setScreenState('landing')}
+            onBack={handleNavigateHome}
           />
         )}
 
@@ -234,6 +288,16 @@ export default function App() {
           />
         )}
       </main>
+
+      {/* Global Footer */}
+      <Footer
+        currentLang={currentLang}
+        onNavigateHome={handleNavigateHome}
+        onNavigateDemoForms={handleNavigateDemoForms}
+        onNavigateHowItWorks={handleNavigateHowItWorks}
+        onNavigateUpload={handleNavigateUpload}
+        onNavigateAbout={handleNavigateAbout}
+      />
 
     </div>
   );

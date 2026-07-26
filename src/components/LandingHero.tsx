@@ -234,7 +234,7 @@ export const LandingHero: React.FC<LandingHeroProps> = ({
       </section>
 
       {/* --- HOW IT WORKS SECTION --- */}
-      <section className="bg-gradient-to-br from-[#F8FBFF] to-white border border-[#E5E7EB] rounded-[24px] sm:rounded-[32px] p-8 sm:p-12 space-y-10 shadow-xs">
+      <section id="how-it-works-section" className="bg-gradient-to-br from-[#F8FBFF] to-white border border-[#E5E7EB] rounded-[24px] sm:rounded-[32px] p-8 sm:p-12 space-y-10 shadow-xs">
         <div className="text-center space-y-2">
           <h2 className="text-2xl sm:text-3xl font-extrabold text-[#1F2937]">
             {t.howItWorksTitle}
@@ -244,38 +244,46 @@ export const LandingHero: React.FC<LandingHeroProps> = ({
           </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 sm:gap-5">
           
-          <div className="bg-white p-6 rounded-[18px] border border-[#E5E7EB] space-y-4 shadow-xs hover:shadow-md hover:border-blue-200 transition-all">
-            <div className="w-12 h-12 rounded-[14px] bg-[#DBEAFE] text-[#2563EB] font-extrabold flex items-center justify-center text-lg">
+          <div className="bg-white p-5 rounded-[18px] border border-[#E5E7EB] space-y-3.5 shadow-xs hover:shadow-md hover:border-blue-200 transition-all">
+            <div className="w-10 h-10 rounded-[12px] bg-[#DBEAFE] text-[#2563EB] font-extrabold flex items-center justify-center text-base">
               1
             </div>
-            <h3 className="font-bold text-base text-[#1F2937]">{t.step1Title}</h3>
+            <h3 className="font-bold text-sm sm:text-base text-[#1F2937]">{t.step1Title}</h3>
             <p className="text-xs text-[#6B7280] leading-relaxed">{t.step1Desc}</p>
           </div>
 
-          <div className="bg-white p-6 rounded-[18px] border border-[#E5E7EB] space-y-4 shadow-xs hover:shadow-md hover:border-blue-200 transition-all">
-            <div className="w-12 h-12 rounded-[14px] bg-[#DBEAFE] text-[#2563EB] font-extrabold flex items-center justify-center text-lg">
+          <div className="bg-white p-5 rounded-[18px] border border-[#E5E7EB] space-y-3.5 shadow-xs hover:shadow-md hover:border-blue-200 transition-all">
+            <div className="w-10 h-10 rounded-[12px] bg-[#DBEAFE] text-[#2563EB] font-extrabold flex items-center justify-center text-base">
               2
             </div>
-            <h3 className="font-bold text-base text-[#1F2937]">{t.step2Title}</h3>
+            <h3 className="font-bold text-sm sm:text-base text-[#1F2937]">{t.step2Title}</h3>
             <p className="text-xs text-[#6B7280] leading-relaxed">{t.step2Desc}</p>
           </div>
 
-          <div className="bg-white p-6 rounded-[18px] border border-[#E5E7EB] space-y-4 shadow-xs hover:shadow-md hover:border-emerald-200 transition-all">
-            <div className="w-12 h-12 rounded-[14px] bg-[#D1FAE5] text-[#10B981] font-extrabold flex items-center justify-center text-lg">
+          <div className="bg-white p-5 rounded-[18px] border border-[#E5E7EB] space-y-3.5 shadow-xs hover:shadow-md hover:border-emerald-200 transition-all">
+            <div className="w-10 h-10 rounded-[12px] bg-[#D1FAE5] text-[#10B981] font-extrabold flex items-center justify-center text-base">
               3
             </div>
-            <h3 className="font-bold text-base text-[#1F2937]">{t.step3Title}</h3>
+            <h3 className="font-bold text-sm sm:text-base text-[#1F2937]">{t.step3Title}</h3>
             <p className="text-xs text-[#6B7280] leading-relaxed">{t.step3Desc}</p>
           </div>
 
-          <div className="bg-white p-6 rounded-[18px] border border-[#E5E7EB] space-y-4 shadow-xs hover:shadow-md hover:border-blue-200 transition-all">
-            <div className="w-12 h-12 rounded-[14px] bg-[#DBEAFE] text-[#2563EB] font-extrabold flex items-center justify-center text-lg">
+          <div className="bg-white p-5 rounded-[18px] border border-[#E5E7EB] space-y-3.5 shadow-xs hover:shadow-md hover:border-blue-200 transition-all">
+            <div className="w-10 h-10 rounded-[12px] bg-[#DBEAFE] text-[#2563EB] font-extrabold flex items-center justify-center text-base">
               4
             </div>
-            <h3 className="font-bold text-base text-[#1F2937]">{t.step4Title}</h3>
+            <h3 className="font-bold text-sm sm:text-base text-[#1F2937]">{t.step4Title}</h3>
             <p className="text-xs text-[#6B7280] leading-relaxed">{t.step4Desc}</p>
+          </div>
+
+          <div className="bg-white p-5 rounded-[18px] border border-[#E5E7EB] space-y-3.5 shadow-xs hover:shadow-md hover:border-indigo-200 transition-all sm:col-span-2 lg:col-span-1">
+            <div className="w-10 h-10 rounded-[12px] bg-indigo-100 text-indigo-600 font-extrabold flex items-center justify-center text-base">
+              5
+            </div>
+            <h3 className="font-bold text-sm sm:text-base text-[#1F2937]">{t.step5Title}</h3>
+            <p className="text-xs text-[#6B7280] leading-relaxed">{t.step5Desc}</p>
           </div>
 
         </div>
@@ -325,17 +333,6 @@ export const LandingHero: React.FC<LandingHeroProps> = ({
           })}
         </div>
       </section>
-
-      {/* --- FOOTER --- */}
-      <footer className="border-t border-[#E5E7EB] pt-8 text-center text-xs text-[#6B7280] space-y-2">
-        <div className="flex items-center justify-center gap-2 font-semibold text-[#1F2937]">
-          <div className="w-5 h-5 bg-[#2563EB] rounded-md flex items-center justify-center text-white">
-            <FileText className="w-3 h-3 stroke-[2.5]" />
-          </div>
-          <span>FormRahber — AI Guide for Confusing Official Forms</span>
-        </div>
-        <p className="text-[#9CA3AF]">Built with high precision for official applications, university admissions &amp; banking</p>
-      </footer>
 
     </div>
   );

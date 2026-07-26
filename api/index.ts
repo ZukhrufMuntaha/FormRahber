@@ -47,7 +47,9 @@ app.post('/api/analyze-form', async (req, res) => {
     const systemPrompt = `
 You are a form-reading assistant for FormRahber. You will receive an image of an official form (blank or filled, in English, Urdu, or mixed script).
 
-1. First check if the image is actually a form with fillable fields. Set "isForm": true if it is a form with fillable fields, or "isForm": false if it is not a form (and explain why in "notFormReason").
+1. First check if the image is actually an official fillable form (such as University admission, Bank account, CNIC application, Passport form, Job application, Scholarship form, or official government form).
+   - Set "isForm": true if it is an official fillable form.
+   - Set "isForm": false if it is NOT an official form (e.g. a photo of a person, animal, car, landscape, object, receipt, random text document, meme, or non-form image). Explain why in "notFormReason".
 
 2. If it is a form, extract every field (do not duplicate or repeat questions):
    - "fieldName": Concise, clean name of the field (e.g. "Degree Programme Name", "Applicant Name", "CNIC Number").
@@ -195,6 +197,16 @@ Rules:
 
     const responseText = response.text || '{}';
     const parsedData = JSON.parse(responseText);
+
+    // If Gemini determined this is not a form or no fields were found
+    if (parsedData.isForm === false || (Array.isArray(parsedData.fields) && parsedData.fields.length === 0)) {
+      return res.json({
+        success: false,
+        isNotForm: true,
+        error: 'Unsupported Image Detected',
+        message: "This image doesn't appear to be an official form.\n\nPlease upload a clear photo of a supported form (University, Bank, CNIC, Passport, Job, or Scholarship form).",
+      });
+    }
 
     // Deduplicate fields if any duplicates generated
     if (Array.isArray(parsedData.fields)) {

@@ -223,20 +223,84 @@ export const FormExportPreview: React.FC<FormExportPreviewProps> = ({
     }
   };
 
-  // Adjust field position by nudge buttons or sliders
-  const updatePosition = (fieldId: string, dxPercent: number, dyPercent: number) => {
-    setPositions((prev) => {
-      const current = prev[fieldId] || { xPercent: 20, yPercent: 20, fontSize: 14 };
-      return {
-        ...prev,
-        [fieldId]: {
-          ...current,
-          xPercent: Math.max(2, Math.min(95, current.xPercent + dxPercent)),
-          yPercent: Math.max(2, Math.min(95, current.yPercent + dyPercent)),
-        },
-      };
-    });
+  const [draggingFieldId, setDraggingFieldId] = useState<string | null>(null);
+  const dragStartRef = useRef<{ startX: number; startY: number; initialXPercent: number; initialYPercent: number } | null>(null);
+
+  // Handle drag initiation for desktop cursor and mobile touch
+  const handlePointerDown = (fieldId: string, clientX: number, clientY: number) => {
+    if (!containerRef.current) return;
+    const currentPos = positions[fieldId] || { xPercent: 20, yPercent: 20, fontSize: 14 };
+
+    setDraggingFieldId(fieldId);
+    setSelectedFieldId(fieldId);
+
+    dragStartRef.current = {
+      startX: clientX,
+      startY: clientY,
+      initialXPercent: currentPos.xPercent,
+      initialYPercent: currentPos.yPercent,
+    };
   };
+
+  // Global move & release listeners for dragging with cursor or touch
+  useEffect(() => {
+    if (!draggingFieldId) return;
+
+    const handlePointerMove = (clientX: number, clientY: number) => {
+      if (!containerRef.current || !dragStartRef.current) return;
+      const rect = containerRef.current.getBoundingClientRect();
+      if (rect.width === 0 || rect.height === 0) return;
+
+      const deltaX = clientX - dragStartRef.current.startX;
+      const deltaY = clientY - dragStartRef.current.startY;
+
+      const deltaXPercent = (deltaX / rect.width) * 100;
+      const deltaYPercent = (deltaY / rect.height) * 100;
+
+      const newX = Math.max(1, Math.min(99, dragStartRef.current.initialXPercent + deltaXPercent));
+      const newY = Math.max(1, Math.min(99, dragStartRef.current.initialYPercent + deltaYPercent));
+
+      setPositions((prev) => ({
+        ...prev,
+        [draggingFieldId]: {
+          ...(prev[draggingFieldId] || { xPercent: 20, yPercent: 20, fontSize: 14 }),
+          xPercent: Number(newX.toFixed(2)),
+          yPercent: Number(newY.toFixed(2)),
+        },
+      }));
+    };
+
+    const onMouseMove = (e: MouseEvent) => {
+      e.preventDefault();
+      handlePointerMove(e.clientX, e.clientY);
+    };
+
+    const onTouchMove = (e: TouchEvent) => {
+      if (e.touches.length > 0) {
+        e.preventDefault();
+        handlePointerMove(e.touches[0].clientX, e.touches[0].clientY);
+      }
+    };
+
+    const onPointerUp = () => {
+      setDraggingFieldId(null);
+      dragStartRef.current = null;
+    };
+
+    window.addEventListener('mousemove', onMouseMove, { passive: false });
+    window.addEventListener('mouseup', onPointerUp);
+    window.addEventListener('touchmove', onTouchMove, { passive: false });
+    window.addEventListener('touchend', onPointerUp);
+    window.addEventListener('touchcancel', onPointerUp);
+
+    return () => {
+      window.removeEventListener('mousemove', onMouseMove);
+      window.removeEventListener('mouseup', onPointerUp);
+      window.removeEventListener('touchmove', onTouchMove);
+      window.removeEventListener('touchend', onPointerUp);
+      window.removeEventListener('touchcancel', onPointerUp);
+    };
+  }, [draggingFieldId]);
 
   const handleOpenEdit = (fieldId: string) => {
     setEditingFieldId(fieldId);
@@ -263,12 +327,6 @@ export const FormExportPreview: React.FC<FormExportPreviewProps> = ({
           <ArrowLeft className="w-4 h-4 text-blue-600" />
           <span>Back to Summary</span>
         </button>
-
-        {/* AI Auto-Overlay Badge */}
-        <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-blue-50 border border-blue-200 text-blue-900 text-xs font-bold">
-          <Sparkles className="w-3.5 h-3.5 text-blue-600" />
-          <span>AI-Populated Form Overlay</span>
-        </div>
       </div>
 
       {/* Title Card */}
@@ -396,34 +454,48 @@ export const FormExportPreview: React.FC<FormExportPreviewProps> = ({
 
                 const pos = positions[field.id] || { xPercent: 20, yPercent: 20, fontSize: 14 };
                 const isSelected = selectedFieldId === field.id;
+                const isDragging = draggingFieldId === field.id;
 
-                let textColor = 'text-blue-900';
-                if (inkColor === 'black') textColor = 'text-slate-950';
+                let textColor = 'text-black';
 
                 return (
                   <div
                     key={field.id}
-                    onClick={() => setSelectedFieldId(field.id)}
+                    onMouseDown={(e) => {
+                      e.stopPropagation();
+                      handlePointerDown(field.id, e.clientX, e.clientY);
+                    }}
+                    onTouchStart={(e) => {
+                      e.stopPropagation();
+                      if (e.touches.length > 0) {
+                        handlePointerDown(field.id, e.touches[0].clientX, e.touches[0].clientY);
+                      }
+                    }}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setSelectedFieldId(field.id);
+                    }}
                     style={{
                       left: `${pos.xPercent}%`,
                       top: `${pos.yPercent}%`,
                       fontSize: `${Math.max(11, Math.round((pos.fontSize * zoomLevel) / 100))}px`,
                     }}
-                    className={`absolute transform -translate-x-1/2 -translate-y-1/2 cursor-pointer font-bold px-1.5 py-0.5 rounded transition-all select-none ${textColor} ${
-                      isSelected
-                        ? 'bg-amber-100/90 border-2 border-amber-500 shadow-md ring-2 ring-amber-300 z-30'
-                        : 'bg-white/85 hover:bg-amber-50/90 border border-blue-400/50 z-10'
+                    className={`absolute transform -translate-x-1/2 -translate-y-1/2 cursor-grab active:cursor-grabbing font-bold px-1 py-0.5 rounded transition-all select-none touch-none text-black border-none bg-transparent ${
+                      isSelected || isDragging
+                        ? 'ring-2 ring-blue-500/70 z-30 scale-105'
+                        : 'z-10 hover:ring-1 hover:ring-slate-300'
                     }`}
                   >
-                    <span>{answer}</span>
+                    <span className="whitespace-nowrap">{answer}</span>
                   </div>
                 );
               })}
             </div>
           </div>
 
-          <p className="text-[11px] text-slate-400 text-center italic">
-            Click any answer text on the image or use the position controls to adjust placement before exporting.
+          <p className="text-[11px] font-medium text-slate-300 text-center flex items-center justify-center gap-1.5">
+            <Move className="w-3.5 h-3.5 text-amber-400 shrink-0" />
+            <span>Drag any field using cursor on desktop or touch on mobile to adjust position.</span>
           </p>
 
         </div>
@@ -441,55 +513,28 @@ export const FormExportPreview: React.FC<FormExportPreviewProps> = ({
             </span>
           </div>
 
-          {/* Selected Field Nudge & Font Controls */}
+          {/* Selected Field Drag & Edit Info Card */}
           {selectedFieldId && (
             <div className="p-4 rounded-2xl bg-blue-50/80 border border-blue-200 space-y-3 animate-fade-in">
               <div className="flex items-center justify-between text-xs">
                 <span className="font-extrabold text-blue-950 uppercase tracking-wider text-[10px]">
-                  Selected Field Position
+                  Selected Field
                 </span>
                 <span className="font-bold text-blue-700">
                   {fields.find((f) => f.id === selectedFieldId)?.fieldName}
                 </span>
               </div>
 
-              <div className="flex items-center justify-between gap-2 text-xs">
-                <span className="text-slate-600 font-medium">Nudge position:</span>
-                <div className="grid grid-cols-3 gap-1 w-28">
-                  <div />
-                  <button
-                    onClick={() => updatePosition(selectedFieldId, 0, -1)}
-                    className="p-1 rounded bg-white border border-blue-200 hover:bg-blue-100 text-center font-bold text-blue-800"
-                  >
-                    ▲
-                  </button>
-                  <div />
-                  <button
-                    onClick={() => updatePosition(selectedFieldId, -1, 0)}
-                    className="p-1 rounded bg-white border border-blue-200 hover:bg-blue-100 text-center font-bold text-blue-800"
-                  >
-                    ◄
-                  </button>
-                  <button
-                    onClick={() => updatePosition(selectedFieldId, 0, 1)}
-                    className="p-1 rounded bg-white border border-blue-200 hover:bg-blue-100 text-center font-bold text-blue-800"
-                  >
-                    ▼
-                  </button>
-                  <button
-                    onClick={() => updatePosition(selectedFieldId, 1, 0)}
-                    className="p-1 rounded bg-white border border-blue-200 hover:bg-blue-100 text-center font-bold text-blue-800"
-                  >
-                    ►
-                  </button>
-                </div>
+              <div className="p-2.5 bg-white/90 rounded-xl border border-blue-100 flex items-center gap-2 text-xs text-blue-900 font-medium">
+                <Move className="w-4 h-4 text-blue-600 shrink-0" />
+                <span>Move position on document using cursor or touch drag.</span>
               </div>
 
               {/* Edit text value */}
               <button
                 id={`edit-selected-${selectedFieldId}`}
                 onClick={() => handleOpenEdit(selectedFieldId)}
-                className="w-full py-2 rounded-xl bg-white border border-blue-300 text-blue-900 font-bold text-xs hover:bg-blue-100/50 flex items-center justify-center gap-1.5 transition-colors"
+                className="w-full py-2 rounded-xl bg-white border border-blue-300 text-blue-900 font-bold text-xs hover:bg-blue-100/50 flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
               >
                 <Edit3 className="w-3.5 h-3.5 text-blue-600" />
                 <span>Edit Answer Text</span>
