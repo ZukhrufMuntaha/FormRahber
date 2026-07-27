@@ -2,12 +2,14 @@
 
 ### AI-Powered Official Form Assistant
 
-[![Live](https://img.shields.io/badge/Live-2563EB?style=for-the-badge&logo=vercel)](https://form-rahber.vercel.app/)
-[![React](https://img.shields.io/badge/React-19-61DAFB?style=for-the-badge&logo=react)](https://react.dev/)
-[![TS](https://img.shields.io/badge/TS-007ACC?style=for-the-badge&logo=typescript)](https://www.typescriptlang.org/)
-[![Tailwind](https://img.shields.io/badge/Tailwind-38B2AC?style=for-the-badge&logo=tailwind-css)](https://tailwindcss.com/)
-[![Gemini](https://img.shields.io/badge/Gemini-8E75B2?style=for-the-badge&logo=google-gemini)](https://ai.google.dev/)
----
+<p align="left">
+  <a href="https://form-rahber.vercel.app/"><img src="https://img.shields.io/badge/Live-Demo-2563EB?style=for-the-badge&logo=vercel" /></a>&nbsp;
+  <a href="https://react.dev/"><img src="https://img.shields.io/badge/React-19-61DAFB?style=for-the-badge&logo=react" /></a>&nbsp;
+  <a href="https://www.typescriptlang.org/"><img src="https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript" /></a>&nbsp;
+  <a href="https://tailwindcss.com/"><img src="https://img.shields.io/badge/Tailwind-v4-38B2AC?style=for-the-badge&logo=tailwind-css" /></a>&nbsp;
+  <a href="https://ai.google.dev/"><img src="https://img.shields.io/badge/Google-Gemini_AI-8E75B2?style=for-the-badge" /></a>
+</p>
+
 
 # 🌍 Live Demo
 
