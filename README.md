@@ -1,185 +1,301 @@
-# FormRahber (فارم رہبر) 📄✨
-### AI-Powered Smart Official Form Reader & Step-by-Step Guided Assistant
+# FormRahber (فارم رہبر) 📄🤖
 
-[![Live Demo](https://img.shields.io/badge/Live%20Demo-FormRahber-2563EB?style=for-the-badge&logo=vercel)](https://form-rahber.vercel.app/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
-[![React 19](https://img.shields.io/badge/React%2019-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)](https://react.dev/)
-[![Tailwind CSS v4](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
-[![Gemini AI](https://img.shields.io/badge/Google_Gemini_2.5_Flash-8E75B2?style=for-the-badge&logo=google-gemini&logoColor=white)](https://ai.google.dev/)
+### AI-Powered Official Form Assistant
 
----
-
-## 🌟 Overview
-
-**FormRahber** (*فارم رہبر*) is an intelligent, bilingual web application designed to eliminate form-filling anxiety and complex bureaucracy for citizens. By uploading a photo or scan of any official paper form — such as **University Admissions, Bank Account Opening, CNIC Applications, Passport Renewal, Job Applications, or Scholarship Forms** — FormRahber automatically analyzes the image, detects all fillable fields, generates easy-to-understand explanations, builds a required document checklist, and guides users step-by-step in **English, Urdu (اردو), or Roman Urdu**.
-
-Once filled, users can interactively align their answers directly on the form canvas using touch or cursor dragging, and export a ready-to-print, high-resolution filled form or PDF.
-
-🔗 **Live Website**: [https://form-rahber.vercel.app/](https://form-rahber.vercel.app/)
+[![Live Demo](https://img.shields.io/badge/Live-Demo-2563EB?style=for-the-badge&logo=vercel)](https://form-rahber.vercel.app/)
+[![React](https://img.shields.io/badge/React-19-61DAFB?style=for-the-badge&logo=react)](https://react.dev/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript)](https://www.typescriptlang.org/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind-v4-38B2AC?style=for-the-badge&logo=tailwind-css)](https://tailwindcss.com/)
+[![Gemini AI](https://img.shields.io/badge/Google-Gemini_AI-8E75B2?style=for-the-badge)](https://ai.google.dev/)
 
 ---
 
-## 🚀 Key Features
+# 🌍 Live Demo
 
-### 🌐 Complete Trilingual Experience (English, Urdu, Roman Urdu)
-- Every single screen, navbar, modal, loading state, form explanation, and button supports instant language switching between **English**, **Urdu (اردو)**, and **Roman Urdu**.
-- Beautiful typography adapted for Nastaliq/Urdu scripts.
+**Website:** https://form-rahber.vercel.app/
 
-### 🔍 Smart AI Form Vision & Detection
-- **Multimodal AI OCR**: Powered by Google's `gemini-2.5-flash` model via `@google/genai` to read printed, typed, or mixed-script official forms in English and Urdu.
-- **Form Guardrails & Detection**: Automatically verifies if an uploaded image is a valid official form. If an unsupported image is uploaded (e.g., photos of cars, landscapes, or receipts), FormRahber gracefully alerts the user with helpful guidance to upload an official document.
-
-### 📋 Automatic Form Breakdown & Document Checklist
-- **Section Categorization**: Groups fields logically (Personal Information, Educational Background, Financial Details, Declaration).
-- **Contextual Explanations**: Plain-language explanations in English & Urdu explaining *why* a specific field is asked and *what* format to provide.
-- **Required Documents List**: Detects necessary attachments (Attested Matric Certificate, Passport Photos, CNIC Copies, Income Slips) so users never miss a required submission document.
-
-### 🎙️ Step-by-Step Guided Assistant with Voice Audio
-- Walkthrough interface that presents questions one by one in simple terms.
-- **Audio Voice Reader**: Integrated Speech Synthesis (TTS) that reads out questions and instructions aloud in Urdu or English for better accessibility.
-- **Live Progress & Completion Meter**: Real-time status indicators tracking answered vs remaining questions.
-
-### 👆 Drag-and-Drop Form Canvas & Custom Alignment
-- **Direct Interactive Positioning**: Adjust populated text on top of the original form image by dragging with mouse cursor on desktop or touch gestures on mobile.
-- **Custom Ink & Styling**: Toggle ink colors (**Blue**, **Black**, **Dark Navy**), adjust font sizes, and zoom in/out for precision alignment.
-
-### 🖨️ Zero-Watermark Export (PDF & High-Res Image)
-- Instantly download the filled document as a high-quality PDF or Image ready for printing or digital submission.
-- Clean, crisp output without cluttered badges or artificial overlays.
-
-### 🧪 Pre-Loaded Sample Demo Forms
-- Test the application instantly without uploading files using built-in templates:
-  - 🎓 **University Admission Form**
-  - 🏦 **Bank Account Opening Form**
-  - 🪪 **CNIC / Identity Registration Form**
-  - 📜 **Merit Scholarship Application**
+**GitHub Repository:** https://github.com/ZukhrufMuntaha/FormRahber
 
 ---
 
-## 🛠️ Tech Stack & Architecture
+# 📖 About FormRahber
 
-### **Frontend**
-- **Framework**: [React 19](https://react.dev/) + [TypeScript](https://www.typescriptlang.org/)
-- **Build Tool**: [Vite 6](https://vitejs.dev/)
-- **Styling**: [Tailwind CSS v4](https://tailwindcss.com/)
-- **Icons**: [Lucide React](https://lucide.dev/)
-- **Animations**: [Motion (Framer Motion)](https://motion.dev/)
-- **PDF Generation**: [jsPDF](https://github.com/parallax/jsPDF)
-- **Voice / Audio**: Web Speech API (`speechSynthesis`)
+FormRahber is an AI-powered web application that helps users understand and complete confusing official forms. Instead of struggling with difficult terminology and complicated instructions, users simply upload a photo of a form and receive AI-generated explanations, document suggestions, and guided assistance in English, Urdu, or Roman Urdu.
 
-### **Backend & AI Proxy**
-- **Server**: [Express.js](https://expressjs.com/) (Node.js) with `tsx` development runner & `esbuild` production bundler.
-- **AI SDK**: [@google/genai SDK](https://www.npmjs.com/package/@google/genai)
-- **Model**: `gemini-2.5-flash` for high-accuracy vision analysis and structured JSON parsing.
-- **Security**: Server-side API proxy routing (`/api/analyze-form`) ensuring `GEMINI_API_KEY` is never exposed to the client browser.
+The application supports common forms such as:
+
+- 🎓 University Admission Forms
+- 🏦 Bank Account Opening Forms
+- 🪪 CNIC / NADRA Forms
+- 📄 Government Forms
+- 💼 Job Application Forms
+- 🎓 Scholarship Forms
 
 ---
 
-## 📁 Directory Structure
+# ❗ Problem Statement
 
+Many people struggle to complete official forms because they contain confusing language, unfamiliar terminology, and unclear document requirements.
+
+This often leads to:
+
+- Incorrect submissions
+- Missing required documents
+- Multiple visits to offices
+- Dependence on paid form-filling agents
+- Difficulties for elderly and low-literacy users
+
+FormRahber solves this problem using Artificial Intelligence by explaining forms in simple language and guiding users step by step.
+
+---
+
+# 👥 Target Users
+
+- Students
+- Parents
+- Scholarship applicants
+- First-time bank customers
+- Job seekers
+- Citizens completing government forms
+- Elderly users
+- Low-literacy users
+
+---
+
+# ✨ Features
+
+- 📄 Upload official forms
+- 🤖 AI-powered form analysis
+- 🌐 English, Urdu & Roman Urdu support
+- 🔍 Automatic field detection
+- 📚 Plain-language explanations
+- 📋 Smart document checklist
+- 🧠 AI guided form filling
+- 🖱 Interactive drag-and-drop field placement
+- 📥 Download completed form as PDF/Image
+- 📱 Mobile responsive interface
+- 🎓 Sample forms for testing
+- 🚫 Detects unsupported images
+
+---
+
+# 🤖 AI Feature
+
+FormRahber uses Google's Gemini Vision model to analyze uploaded forms.
+
+The AI automatically:
+
+- Reads English and Urdu forms
+- Detects every visible field
+- Explains difficult terminology
+- Identifies required documents
+- Guides users while filling forms
+- Detects non-form images
+- Generates structured JSON for the application
+
+---
+
+# 🧠 AI System Prompt
+
+The AI was instructed with a custom system prompt similar to the following:
+
+```text
+You are an AI assistant specialized in official forms.
+
+Your responsibilities:
+
+• Detect every visible field.
+• Never invent fields.
+• Read English, Urdu, and mixed-language forms.
+• Explain every field in simple language.
+• Suggest required supporting documents.
+• Return valid structured JSON.
+• If the uploaded image is not an official form, politely reject it.
+• Never guess uncertain information.
 ```
-FormRahber/
-├── api/
-│   └── index.ts               # Express server API endpoints (Gemini proxy & analysis)
-├── assets/                    # Sample form template images
-├── src/
-│   ├── components/
-│   │   ├── Header.tsx         # Responsive navbar with trilingual language switcher
-│   │   ├── LandingHero.tsx    # Hero section with 3D illustration & quick CTA
-│   │   ├── UploadModal.tsx    # Upload modal with camera support & form validation
-│   │   ├── AnalysisLoading.tsx# AI processing loading state with progress steps
-│   │   ├── FormOverview.tsx   # Analysis breakdown & document checklist page
-│   │   ├── GuidedFilling.tsx  # Step-by-step Q&A walkthrough with audio synthesis
-│   │   ├── SummaryReview.tsx  # Final answers review & editing screen
-│   │   ├── FormExportPreview.tsx # Interactive canvas alignment & PDF export
-│   │   ├── AboutPage.tsx      # Application mission & features overview
-│   │   └── Footer.tsx         # Site footer with bilingual support
-│   ├── data/
-│   │   └── sampleForms.ts     # Pre-configured sample form datasets
-│   ├── utils/
-│   │   └── translations.ts    # Centralized trilingual dictionary (EN, UR, Roman Urdu)
-│   ├── App.tsx                # Main application state & screen router
-│   ├── main.tsx               # Client entry point
-│   ├── types.ts               # Shared TypeScript interfaces & types
-│   └── index.css              # Global styles & Tailwind CSS configuration
-├── .env.example               # Environment variables template
-├── metadata.json              # Applet metadata & permissions
-├── package.json               # Dependencies and scripts
-├── server.ts                  # Production Express + Vite server entry point
-├── vercel.json                # Vercel deployment configuration
-└── vite.config.ts             # Vite configuration
-```
 
 ---
 
-## 💻 Local Development Setup
+# 🛠 Technologies Used
 
-### **Prerequisites**
-- **Node.js**: v18.0.0 or higher
-- **npm**: v9.0.0 or higher
-- **Gemini API Key**: Obtain a free API key from [Google AI Studio](https://aistudio.google.com/)
+### Frontend
 
-### **1. Clone the Repository**
+- React 19
+- TypeScript
+- Tailwind CSS v4
+- Vite
+
+### Backend
+
+- Express.js
+- Node.js
+
+### AI
+
+- Google Gemini 2.5 Flash
+- Google GenAI SDK
+
+### Other Libraries
+
+- jsPDF
+- Lucide React
+- Motion
+- Web Speech API
+
+### Deployment
+
+- Vercel
+
+### Version Control
+
+- GitHub
+
+---
+
+# 📸 Screenshots
+
+## Landing Page
+
+> Add screenshot here
+
+![Landing](screenshots/landing.png)
+
+---
+
+## Upload Form
+
+> Add screenshot here
+
+![Upload](screenshots/upload.png)
+
+---
+
+## AI Analysis
+
+> Add screenshot here
+
+![Analysis](screenshots/analysis.png)
+
+---
+
+## Guided Filling
+
+> Add screenshot here
+
+![Guided](screenshots/guided.png)
+
+---
+
+## Export Filled Form
+
+> Add screenshot here
+
+![Export](screenshots/export.png)
+
+---
+
+# 🚀 How to Run
+
+Clone the repository
+
 ```bash
-git clone https://github.com/your-username/form-rahber.git
-cd form-rahber
+git clone https://github.com/ZukhrufMuntaha/FormRahber.git
 ```
 
-### **2. Install Dependencies**
+Move into the project
+
+```bash
+cd FormRahber
+```
+
+Install dependencies
+
 ```bash
 npm install
 ```
 
-### **3. Configure Environment Variables**
-Create a `.env` file in the project root directory (refer to `.env.example`):
+Create a `.env` file
+
 ```env
-GEMINI_API_KEY=your_gemini_api_key_here
+GEMINI_API_KEY=YOUR_GEMINI_API_KEY
 ```
 
-### **4. Start Development Server**
+Run the development server
+
 ```bash
 npm run dev
 ```
-Open your browser and navigate to `http://localhost:3000`.
 
 ---
 
-## 📦 Build & Production Deployment
+# 🌐 Deployment
 
-### **Production Build**
-To build the application for production deployment:
-```bash
-npm run build
+This project is deployed on **Vercel**.
+
+Deployment Steps:
+
+1. Push the project to GitHub.
+2. Import the repository into Vercel.
+3. Add:
+
 ```
-This compiles the Vite React frontend into `dist/` and bundles the Express server into `dist/server.cjs` using `esbuild`.
-
-### **Start Production Server**
-```bash
-npm run start
+GEMINI_API_KEY
 ```
 
-### **Deploying on Vercel**
-This project is pre-configured for deployment on **Vercel** via `vercel.json`:
-1. Push your code to GitHub / GitLab.
-2. Import the project into your Vercel Dashboard.
-3. Add `GEMINI_API_KEY` in Vercel **Environment Variables**.
-4. Deploy!
+under Environment Variables.
+
+4. Deploy.
+
+Live URL:
+
+https://form-rahber.vercel.app/
 
 ---
 
-## 🛡️ Privacy & Security
+# 🔒 Privacy & Security
 
-- **No Permanent Image Storage**: Form images uploaded by users are processed in-memory for AI analysis and remain client-side for canvas rendering.
-- **Secure Key Handling**: Gemini API requests are executed exclusively on the server side; secrets are never leaked to browser networks.
-
----
-
-## 📄 License
-
-This project is open-source under the **MIT License**.
+- Images are processed only for AI analysis.
+- No permanent user database is used.
+- API keys are stored securely using environment variables.
+- Sensitive credentials are never committed to GitHub.
 
 ---
 
-<p align="center">
-  Developed with ❤️ by <b>FormRahber Team</b> for citizens everywhere.
-</p>
+# 🚀 Future Improvements
+
+- Multi-page form support
+- Voice input
+- User accounts
+- Save previous forms
+- More language support
+- Digital signatures
+- OCR improvements
+
+---
+
+# 🙏 Acknowledgements
+
+- Google Gemini AI
+- React
+- Tailwind CSS
+- Vercel
+- Lucide Icons
+- jsPDF
+
+---
+
+# 📄 License
+
+This project is licensed under the MIT License.
+
+---
+
+# 👨‍💻 Developer
+
+**Developed by Zukhruf Muntaha**
+
+Final Project — AI Application Development
+
+2026
+
+Made with ❤️ using React, TypeScript and Google Gemini AI.
