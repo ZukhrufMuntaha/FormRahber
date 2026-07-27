@@ -1,4 +1,4 @@
-# FormRahber (فارم رہبر) 📄🤖
+# FormRahber (فارم رہبر) 📄
 
 ### AI-Powered Official Form Assistant
 
