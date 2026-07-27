@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { AppLanguage, ScreenState } from '../types';
 import { TRANSLATIONS } from '../utils/translations';
-import { FileText, Languages, RefreshCw, HelpCircle, Sparkles, Menu, X } from 'lucide-react';
+import { FileText, RefreshCw, HelpCircle, Sparkles, Menu, X, Home, Info } from 'lucide-react';
 
 interface HeaderProps {
   currentLang: AppLanguage;
@@ -39,6 +39,7 @@ export const Header: React.FC<HeaderProps> = ({
       howItWorks: 'How it Works',
       about: 'About',
       getStarted: 'Get Started',
+      startNew: 'Start New Form',
     },
     ur: {
       home: 'ہوم',
@@ -46,6 +47,7 @@ export const Header: React.FC<HeaderProps> = ({
       howItWorks: 'یہ کیسے کام کرتا ہے',
       about: 'ہمارے بارے میں',
       getStarted: 'شروع کریں',
+      startNew: 'نیا فارم شروع کریں',
     },
     roman_urdu: {
       home: 'Home',
@@ -53,33 +55,32 @@ export const Header: React.FC<HeaderProps> = ({
       howItWorks: 'How it Works',
       about: 'About',
       getStarted: 'Get Started',
+      startNew: 'Start New Form',
     },
   };
 
   const navT = navLabels[currentLang] || navLabels.en;
   const isUrdu = currentLang === 'ur';
 
+  // Only close mobile menu if user taps/clicks OUTSIDE header component
   useEffect(() => {
     if (!isMobileMenuOpen) return;
 
-    const handleGlobalClick = (event: MouseEvent | TouchEvent) => {
-      // Check if click was on hamburger button
-      const hamburgerBtn = document.getElementById('mobile-hamburger-btn');
-      if (hamburgerBtn && hamburgerBtn.contains(event.target as Node)) {
-        return;
+    const handleOutsideClick = (event: MouseEvent | TouchEvent) => {
+      if (headerRef.current && !headerRef.current.contains(event.target as Node)) {
+        setIsMobileMenuOpen(false);
       }
-      setIsMobileMenuOpen(false);
     };
 
     const timer = setTimeout(() => {
-      document.addEventListener('click', handleGlobalClick);
-      document.addEventListener('touchstart', handleGlobalClick);
-    }, 10);
+      document.addEventListener('click', handleOutsideClick);
+      document.addEventListener('touchstart', handleOutsideClick, { passive: true });
+    }, 50);
 
     return () => {
       clearTimeout(timer);
-      document.removeEventListener('click', handleGlobalClick);
-      document.removeEventListener('touchstart', handleGlobalClick);
+      document.removeEventListener('click', handleOutsideClick);
+      document.removeEventListener('touchstart', handleOutsideClick);
     };
   }, [isMobileMenuOpen]);
 
@@ -157,11 +158,11 @@ export const Header: React.FC<HeaderProps> = ({
         <div className="flex items-center gap-1 sm:gap-3.5 shrink-0 min-w-0">
           
           {/* Language Selector */}
-          <div className="flex bg-[#F8FBFF] p-0.5 rounded-full text-[9px] sm:text-xs font-bold border border-[#E5E7EB] shadow-2xs shrink-0">
+          <div className="flex bg-[#F8FBFF] p-1 rounded-full text-[11px] sm:text-sm font-bold border border-[#E5E7EB] shadow-2xs shrink-0">
             <button
               id="lang-en-btn"
               onClick={() => onLanguageChange('en')}
-              className={`px-1 sm:px-3 py-0.5 sm:py-1 rounded-full transition-all cursor-pointer ${
+              className={`px-2 sm:px-3.5 py-1 sm:py-1.5 rounded-full transition-all cursor-pointer ${
                 currentLang === 'en'
                   ? 'bg-[#2563EB] text-white shadow-xs font-bold'
                   : 'text-[#1F2937] hover:text-[#2563EB]'
@@ -173,7 +174,7 @@ export const Header: React.FC<HeaderProps> = ({
             <button
               id="lang-ur-btn"
               onClick={() => onLanguageChange('ur')}
-              className={`px-1 sm:px-3 py-0.5 sm:py-1 rounded-full transition-all cursor-pointer ${
+              className={`px-2 sm:px-3.5 py-1 sm:py-1.5 rounded-full transition-all cursor-pointer ${
                 currentLang === 'ur'
                   ? 'bg-[#2563EB] text-white shadow-xs font-bold'
                   : 'text-[#1F2937] hover:text-[#2563EB] font-urdu'
@@ -185,7 +186,7 @@ export const Header: React.FC<HeaderProps> = ({
             <button
               id="lang-roman-btn"
               onClick={() => onLanguageChange('roman_urdu')}
-              className={`px-1 sm:px-3 py-0.5 sm:py-1 rounded-full transition-all cursor-pointer ${
+              className={`px-2 sm:px-3.5 py-1 sm:py-1.5 rounded-full transition-all cursor-pointer ${
                 currentLang === 'roman_urdu'
                   ? 'bg-[#2563EB] text-white shadow-xs font-bold'
                   : 'text-[#1F2937] hover:text-[#2563EB]'
@@ -222,8 +223,11 @@ export const Header: React.FC<HeaderProps> = ({
           {/* Mobile Hamburger Toggle Button */}
           <button
             id="mobile-hamburger-btn"
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="md:hidden p-1.5 sm:p-2 rounded-[12px] bg-[#F8FAFC] hover:bg-[#E2E8F0] text-[#1E3A8A] transition-colors cursor-pointer border border-[#E5E7EB] shrink-0"
+            onClick={(e) => {
+              e.stopPropagation();
+              setIsMobileMenuOpen(!isMobileMenuOpen);
+            }}
+            className="md:hidden p-1.5 sm:p-2 rounded-[12px] bg-[#F8FAFC] hover:bg-[#E2E8F0] active:bg-blue-100 text-[#1E3A8A] transition-colors cursor-pointer border border-[#E5E7EB] shrink-0 touch-manipulation"
             aria-label="Toggle navigation menu"
           >
             {isMobileMenuOpen ? (
@@ -239,52 +243,89 @@ export const Header: React.FC<HeaderProps> = ({
 
       {/* Mobile Navigation Dropdown Menu */}
       {isMobileMenuOpen && (
-        <div className={`md:hidden absolute top-full left-0 right-0 bg-white/98 backdrop-blur-md border-b border-[#E5E7EB] shadow-lg py-3 px-4 flex flex-col gap-1.5 z-50 ${isUrdu ? 'font-urdu' : ''}`}>
+        <div
+          id="mobile-nav-dropdown"
+          className={`md:hidden absolute top-full left-0 right-0 bg-white/98 backdrop-blur-md border-b border-[#E5E7EB] shadow-xl py-3 px-4 flex flex-col gap-1.5 z-50 ${isUrdu ? 'font-urdu' : ''}`}
+        >
           <button
             id="mobile-nav-home-btn"
-            onClick={() => {
+            onClick={(e) => {
+              e.stopPropagation();
               onNavigateHome();
               setIsMobileMenuOpen(false);
             }}
-            className="w-full text-left px-3.5 py-2.5 rounded-xl font-bold text-sm text-[#1F2937] hover:bg-slate-50 hover:text-[#2563EB] active:text-[#2563EB] transition-colors cursor-pointer"
+            className="w-full text-left px-3.5 py-3 rounded-xl font-bold text-sm text-[#1F2937] hover:bg-blue-50 hover:text-[#2563EB] active:bg-blue-100 active:text-[#2563EB] transition-all cursor-pointer flex items-center justify-between group touch-manipulation"
           >
-            {navT.home}
+            <span className="flex items-center gap-2.5">
+              <Home className="w-4 h-4 text-[#2563EB]" />
+              <span>{navT.home}</span>
+            </span>
           </button>
 
           <button
             id="mobile-nav-demo-forms-btn"
-            onClick={() => {
+            onClick={(e) => {
+              e.stopPropagation();
               onNavigateDemoForms();
               setIsMobileMenuOpen(false);
             }}
-            className="w-full text-left px-3.5 py-2.5 rounded-xl font-bold text-sm text-[#1F2937] hover:bg-slate-50 hover:text-[#2563EB] active:text-[#2563EB] transition-colors cursor-pointer"
+            className="w-full text-left px-3.5 py-3 rounded-xl font-bold text-sm text-[#1F2937] hover:bg-blue-50 hover:text-[#2563EB] active:bg-blue-100 active:text-[#2563EB] transition-all cursor-pointer flex items-center justify-between group touch-manipulation"
           >
-            {navT.demoForms}
+            <span className="flex items-center gap-2.5">
+              <Sparkles className="w-4 h-4 text-[#2563EB]" />
+              <span>{navT.demoForms}</span>
+            </span>
           </button>
 
           <button
             id="mobile-nav-how-it-works-btn"
-            onClick={() => {
+            onClick={(e) => {
+              e.stopPropagation();
               onNavigateHowItWorks();
               setIsMobileMenuOpen(false);
             }}
-            className="w-full text-left px-3.5 py-2.5 rounded-xl font-bold text-sm text-[#1F2937] hover:bg-slate-50 hover:text-[#2563EB] active:text-[#2563EB] transition-colors cursor-pointer"
+            className="w-full text-left px-3.5 py-3 rounded-xl font-bold text-sm text-[#1F2937] hover:bg-blue-50 hover:text-[#2563EB] active:bg-blue-100 active:text-[#2563EB] transition-all cursor-pointer flex items-center justify-between group touch-manipulation"
           >
-            {navT.howItWorks}
+            <span className="flex items-center gap-2.5">
+              <HelpCircle className="w-4 h-4 text-[#2563EB]" />
+              <span>{navT.howItWorks}</span>
+            </span>
           </button>
 
           <button
             id="mobile-nav-about-btn"
-            onClick={() => {
+            onClick={(e) => {
+              e.stopPropagation();
               onNavigateAbout();
               setIsMobileMenuOpen(false);
             }}
-            className="w-full text-left px-3.5 py-2.5 rounded-xl font-bold text-sm text-[#1F2937] hover:bg-slate-50 hover:text-[#2563EB] active:text-[#2563EB] transition-colors cursor-pointer"
+            className="w-full text-left px-3.5 py-3 rounded-xl font-bold text-sm text-[#1F2937] hover:bg-blue-50 hover:text-[#2563EB] active:bg-blue-100 active:text-[#2563EB] transition-all cursor-pointer flex items-center justify-between group touch-manipulation"
           >
-            {navT.about}
+            <span className="flex items-center gap-2.5">
+              <Info className="w-4 h-4 text-[#2563EB]" />
+              <span>{navT.about}</span>
+            </span>
           </button>
+
+          {screenState !== 'landing' && screenState !== 'about' && (
+            <div className="pt-2 border-t border-[#E5E7EB] mt-1 flex flex-col gap-2">
+              <button
+                id="mobile-nav-start-new-btn"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onReset();
+                  setIsMobileMenuOpen(false);
+                }}
+                className="w-full py-2.5 px-3.5 rounded-xl bg-blue-50 hover:bg-blue-100 text-[#2563EB] font-extrabold text-xs flex items-center justify-center gap-2 transition-all cursor-pointer active:scale-95 touch-manipulation"
+              >
+                <RefreshCw className="w-4 h-4" />
+                <span>{navT.startNew}</span>
+              </button>
+            </div>
+          )}
         </div>
       )}
     </header>
   );
 };
+

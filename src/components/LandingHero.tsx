@@ -185,7 +185,8 @@ export const LandingHero: React.FC<LandingHeroProps> = ({
             return (
               <div
                 key={sample.id}
-                className="group relative bg-white rounded-[18px] border border-[#E5E7EB] shadow-xs hover:shadow-xl hover:border-blue-300 transition-all duration-300 transform hover:-translate-y-1 overflow-hidden flex flex-col justify-between"
+                onClick={() => onSelectSample(sample)}
+                className="group relative bg-white rounded-[18px] border border-[#E5E7EB] shadow-xs hover:shadow-xl hover:border-blue-400 transition-all duration-300 transform hover:-translate-y-1 overflow-hidden flex flex-col justify-between cursor-pointer touch-manipulation"
               >
                 <div>
                   <div className="relative h-52 sm:h-56 overflow-hidden bg-slate-100/90 border-b border-[#E5E7EB] flex items-start justify-center">
@@ -211,7 +212,7 @@ export const LandingHero: React.FC<LandingHeroProps> = ({
                     <h3 className="font-bold text-lg text-[#1F2937] group-hover:text-[#2563EB] transition-colors">
                       {sample.title}
                     </h3>
-                    <p className="text-xs text-[#6B7280] line-clamp-3 leading-relaxed">
+                    <p className="text-xs text-[#6B7280] line-clamp-3 leading-relaxed group-hover:text-slate-700 transition-colors">
                       {desc}
                     </p>
                   </div>
@@ -220,11 +221,14 @@ export const LandingHero: React.FC<LandingHeroProps> = ({
                 <div className="p-6 pt-0">
                   <button
                     id={`sample-select-${sample.id}`}
-                    onClick={() => onSelectSample(sample)}
-                    className="w-full py-3 px-4 rounded-[14px] bg-[#DBEAFE]/60 hover:bg-[#2563EB] hover:text-white text-[#2563EB] font-bold text-xs transition-all duration-200 flex items-center justify-center gap-2 group-hover:bg-[#2563EB] group-hover:text-white group-hover:shadow-md"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onSelectSample(sample);
+                    }}
+                    className="w-full py-3 px-4 rounded-[14px] bg-[#DBEAFE]/60 hover:bg-[#2563EB] hover:text-white text-[#2563EB] font-bold text-xs transition-all duration-200 flex items-center justify-center gap-2 group-hover:bg-[#2563EB] group-hover:text-white group-hover:shadow-md cursor-pointer active:scale-95 touch-manipulation"
                   >
                     <span>Analyze This Form</span>
-                    <ArrowRight className="w-4 h-4" />
+                    <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                   </button>
                 </div>
               </div>
