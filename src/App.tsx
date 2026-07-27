@@ -21,7 +21,67 @@ import { AlertCircle, RefreshCw } from 'lucide-react';
 
 export default function App() {
   const [currentLang, setCurrentLang] = useState<AppLanguage>('en');
-  const [screenState, setScreenState] = useState<ScreenState>('landing');
+  const [screenState, setScreenStateState] = useState<ScreenState>('landing');
+
+  // Helper to change screen state and push to browser history for step-by-step mobile back button support
+  const navigateToScreen = (newScreen: ScreenState, replace = false) => {
+    setScreenStateState(newScreen);
+    try {
+      if (replace) {
+        window.history.replaceState({ screen: newScreen }, '');
+      } else {
+        window.history.pushState({ screen: newScreen }, '');
+      }
+    } catch {
+      // Ignore if history API restricted in sandboxed iframe
+    }
+  };
+
+  const setScreenState = (newScreen: ScreenState | ((prev: ScreenState) => ScreenState)) => {
+    if (typeof newScreen === 'function') {
+      setScreenStateState((prev) => {
+        const next = newScreen(prev);
+        try {
+          window.history.pushState({ screen: next }, '');
+        } catch {}
+        return next;
+      });
+    } else {
+      navigateToScreen(newScreen);
+    }
+  };
+
+  // Sync with browser popstate (mobile hardware/gesture back button & browser back button)
+  useEffect(() => {
+    try {
+      if (!window.history.state || !window.history.state.screen) {
+        window.history.replaceState({ screen: 'landing' }, '');
+      }
+    } catch {}
+
+    const handlePopState = (e: PopStateEvent) => {
+      if (e.state && e.state.screen) {
+        setScreenStateState(e.state.screen);
+      } else {
+        // Step-by-step fallback
+        setScreenStateState((prev) => {
+          switch (prev) {
+            case 'export': return 'summary';
+            case 'summary': return 'guided';
+            case 'guided': return 'overview';
+            case 'overview': return 'landing';
+            case 'analysis': return 'upload';
+            case 'upload': return 'landing';
+            case 'about': return 'landing';
+            default: return 'landing';
+          }
+        });
+      }
+    };
+
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, []);
 
   const [analysisResult, setAnalysisResult] = useState<FormAnalysisResult | null>(null);
   const [documents, setDocuments] = useState<RequiredDocument[]>([]);
