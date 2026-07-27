@@ -156,7 +156,7 @@ Your responsibilities:
 
 ## Landing Page
 
-> Add screenshot here
+
 
 ![Landing](screenshots/landing.png)
 
@@ -164,7 +164,7 @@ Your responsibilities:
 
 ## Upload Form
 
-> Add screenshot here
+
 
 ![Upload](screenshots/upload.png)
 
@@ -172,7 +172,7 @@ Your responsibilities:
 
 ## AI Analysis
 
-> Add screenshot here
+
 
 ![Analysis](screenshots/analysis.png)
 
@@ -180,7 +180,7 @@ Your responsibilities:
 
 ## Guided Filling
 
-> Add screenshot here
+
 
 ![Guided](screenshots/guided.png)
 
@@ -188,7 +188,7 @@ Your responsibilities:
 
 ## Export Filled Form
 
-> Add screenshot here
+
 
 ![Export](screenshots/export.png)
 
