@@ -150,6 +150,8 @@ Your responsibilities:
 
 - GitHub
 
+The Express server (server.ts) handles local development; in production the same logic runs as Vercel serverless functions under /api, so the Gemini API key never reaches the client.
+
 ---
 
 # 📸 Screenshots
